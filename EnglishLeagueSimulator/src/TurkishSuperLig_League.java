@@ -8,27 +8,24 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * The main class for the German Bundesliga Simulator.
- * This version simulates the 18-team league, a simple DFB-Pokal, and features
- * the correct, Bundesliga-specific tie-breaker rules.
- *
- * NOTE: This class has been refactored to work with the
- * EuropeanCompetitionSimulator.
+ * The main class for the Turkish Süper Lig Simulator.
+ * This version simulates the 18-team league, a simple Turkish Cup,
+ * and features accurate European and relegation qualification rules.
  */
-public class Bundesliga_League {
+public class TurkishSuperLig_League {
     private final List<Team> teams;
     private final List<Match> fixtures;
     private final MatchSimulator matchSimulator;
     private final Random random = new Random();
 
-    private Team dfbPokalWinner;
+    private Team turkishCupWinner;
 
     // Lists to store qualified teams
     private final List<Team> uclTeams = new ArrayList<>();
     private final List<Team> uelTeams = new ArrayList<>();
     private final List<Team> ueclTeams = new ArrayList<>();
 
-    public Bundesliga_League() {
+    public TurkishSuperLig_League() {
         this.teams = new ArrayList<>();
         this.fixtures = new ArrayList<>();
         this.matchSimulator = new MatchSimulator();
@@ -48,59 +45,60 @@ public class Bundesliga_League {
     }
 
     public static void main(String[] args) {
-        Bundesliga_League bundesliga = new Bundesliga_League();
+        TurkishSuperLig_League turkishSuperLig = new TurkishSuperLig_League();
 
-        System.out.println("--- Setting up the Bundesliga with real teams ---");
-        bundesliga.setupTeams();
+        System.out.println("--- Setting up Turkish Süper Lig with real teams ---");
+        turkishSuperLig.setupTeams();
 
-        System.out.println("\n--- Simulating the DFB-Pokal... ---");
-        bundesliga.simulateDFBPokal();
+        System.out.println("\n--- Simulating the Turkish Cup... ---");
+        turkishSuperLig.simulateTurkishCup();
 
         System.out.println("\n--- Generating League Fixtures ---");
-        bundesliga.generateFixtures();
+        turkishSuperLig.generateFixtures();
 
         System.out.println("\n--- Simulating League Season with Dominance Model... ---");
-        bundesliga.simulateSeason();
+        turkishSuperLig.simulateSeason();
 
         System.out.println("\n--- Determining European Spots ---");
-        bundesliga.determineEuropeanSpots();
+        turkishSuperLig.determineEuropeanSpots();
 
-        System.out.println("\n--- FINAL BUNDESLIGA TABLE ---");
-        bundesliga.displayTable();
+        System.out.println("\n--- FINAL TURKISH SÜPER LIG TABLE ---");
+        turkishSuperLig.displayTable();
     }
 
     public void setupTeams() {
         double initialElo = 1500;
-        this.teams.add(new Team("Bayern Munich", 98, 88, initialElo + 360)); // Adjusted
-        this.teams.add(new Team("Borussia Dortmund", 89, 82, initialElo + 280)); // Adjusted
-        this.teams.add(new Team("RB Leipzig", 88, 84, initialElo + 220)); // Adjusted
-        this.teams.add(new Team("Bayer Leverkusen", 87, 81, initialElo + 210)); // Adjusted
-        this.teams.add(new Team("Eintracht Frankfurt", 84, 79, initialElo + 100));
-        this.teams.add(new Team("SC Freiburg", 80, 80, initialElo + 50));
-        this.teams.add(new Team("Union Berlin", 78, 83, initialElo + 40));
-        this.teams.add(new Team("VfL Wolfsburg", 81, 78, initialElo + 30));
-        this.teams.add(new Team("Borussia M'gladbach", 82, 75, initialElo + 20));
-        this.teams.add(new Team("TSG Hoffenheim", 83, 74, initialElo + 10));
-        this.teams.add(new Team("Mainz 05", 77, 77, initialElo));
-        this.teams.add(new Team("FC Koln", 76, 79, initialElo - 20));
-        this.teams.add(new Team("Werder Bremen", 79, 72, initialElo - 40));
-        this.teams.add(new Team("FC Augsburg", 74, 76, initialElo - 60));
-        this.teams.add(new Team("VfB Stuttgart", 75, 71, initialElo - 100));
-        this.teams.add(new Team("VfL Bochum", 70, 73, initialElo - 150));
-        this.teams.add(new Team("Hertha BSC", 68, 70, initialElo - 200));
-        this.teams.add(new Team("Schalke 04", 67, 68, initialElo - 220));
-        System.out.println("18 Bundesliga teams have been created.");
+        this.teams.add(new Team("Galatasaray", 87, 83, initialElo + 180));
+        this.teams.add(new Team("Fenerbahçe", 86, 82, initialElo + 170));
+        this.teams.add(new Team("Beşiktaş", 83, 80, initialElo + 140));
+        this.teams.add(new Team("Trabzonspor", 81, 79, initialElo + 100));
+        this.teams.add(new Team("İstanbul Başakşehir", 79, 77, initialElo + 50));
+        this.teams.add(new Team("Adana Demirspor", 77, 75, initialElo + 20));
+        this.teams.add(new Team("Konyaspor", 75, 74, initialElo));
+        this.teams.add(new Team("Sivasspor", 74, 73, initialElo - 10));
+        this.teams.add(new Team("Antalyaspor", 73, 72, initialElo - 20));
+        this.teams.add(new Team("Kayserispor", 72, 71, initialElo - 30));
+        this.teams.add(new Team("Gaziantep FK", 71, 70, initialElo - 40));
+        this.teams.add(new Team("Alanyaspor", 70, 69, initialElo - 50));
+        this.teams.add(new Team("Fatih Karagümrük", 69, 68, initialElo - 60));
+        this.teams.add(new Team("Hatayspor", 68, 67, initialElo - 70));
+        this.teams.add(new Team("Ankaragücü", 67, 66, initialElo - 80));
+        this.teams.add(new Team("Pendikspor", 66, 65, initialElo - 90));
+        this.teams.add(new Team("Samsunspor", 65, 64, initialElo - 100));
+        this.teams.add(new Team("Çaykur Rizespor", 64, 63, initialElo - 110));
+        System.out.println("18 Turkish Süper Lig teams have been created.");
     }
 
-    public void simulateDFBPokal() {
+    public void simulateTurkishCup() {
         List<Team> cupTeams = new ArrayList<>(this.teams);
         Collections.shuffle(cupTeams, random);
 
         cupTeams.sort(Comparator.comparingDouble(Team::getEloRating).reversed());
-        List<Team> preliminaryTeams = new ArrayList<>(cupTeams.subList(14, 18));
-        List<Team> teamsWithByes = new ArrayList<>(cupTeams.subList(0, 14));
+        List<Team> preliminaryTeams = new ArrayList<>(cupTeams.subList(14, 18)); // Example: lower 4 teams play
+                                                                                 // preliminary
+        List<Team> teamsWithByes = new ArrayList<>(cupTeams.subList(0, 14)); // Top 14 get byes
 
-        System.out.println("\n** DFB-Pokal Preliminary Round **");
+        System.out.println("\n** Turkish Cup Preliminary Round **");
         List<Team> preliminaryWinners = new ArrayList<>();
         for (int i = 0; i < preliminaryTeams.size(); i += 2) {
             preliminaryWinners
@@ -110,15 +108,15 @@ public class Bundesliga_League {
         List<Team> roundOf16Teams = new ArrayList<>(teamsWithByes);
         roundOf16Teams.addAll(preliminaryWinners);
 
-        System.out.println("\n** DFB-Pokal Round of 16 **");
+        System.out.println("\n** Turkish Cup Round of 16 **");
         List<Team> quarterFinalists = simulateKnockoutRound(roundOf16Teams);
-        System.out.println("\n** DFB-Pokal Quarter-Finals **");
+        System.out.println("\n** Turkish Cup Quarter-Finals **");
         List<Team> semiFinalists = simulateKnockoutRound(quarterFinalists);
-        System.out.println("\n** DFB-Pokal Semi-Finals **");
+        System.out.println("\n** Turkish Cup Semi-Finals **");
         List<Team> finalists = simulateKnockoutRound(semiFinalists);
-        System.out.println("\n** DFB-Pokal Final **");
-        this.dfbPokalWinner = matchSimulator.simulateSingleMatch(finalists.get(0), finalists.get(1));
-        System.out.println("\nDFB-Pokal Winner: " + this.dfbPokalWinner.getName());
+        System.out.println("\n** Turkish Cup Final **");
+        this.turkishCupWinner = matchSimulator.simulateSingleMatch(finalists.get(0), finalists.get(1));
+        System.out.println("\nTurkish Cup Winner: " + this.turkishCupWinner.getName());
     }
 
     private List<Team> simulateKnockoutRound(List<Team> teamsInRound) {
@@ -154,21 +152,22 @@ public class Bundesliga_League {
 
         Set<Team> qualifiedForEurope = new HashSet<>();
 
-        // 1. UCL spots (Top 4)
-        for (int i = 0; i < 4; i++) {
-            uclTeams.add(this.teams.get(i));
-        }
+        // 1. UCL spots (Champion and Runner-up for qualifiers)
+        uclTeams.add(this.teams.get(0)); // Champion
+        uclTeams.add(this.teams.get(1)); // Runner-up
         qualifiedForEurope.addAll(uclTeams);
 
-        // 2. DFB-Pokal winner gets a UEL spot
-        if (!qualifiedForEurope.contains(dfbPokalWinner)) {
-            uelTeams.add(dfbPokalWinner);
-            qualifiedForEurope.add(dfbPokalWinner);
+        // 2. Turkish Cup winner gets a UEL spot
+        if (!qualifiedForEurope.contains(turkishCupWinner)) {
+            uelTeams.add(turkishCupWinner);
+            qualifiedForEurope.add(turkishCupWinner);
         }
 
         // 3. Fill remaining UEL/UECL spots from league table
-        int leagueSpotCounter = 4; // Start checking from 5th place
-        while (uelTeams.size() < 2 && leagueSpotCounter < this.teams.size()) {
+        int leagueSpotCounter = 2; // Start checking from 3rd place
+
+        // Find UEL spot (3rd place, or passed down if cup winner is higher)
+        while (uelTeams.size() < 1 && leagueSpotCounter < this.teams.size()) {
             Team team = this.teams.get(leagueSpotCounter);
             if (!qualifiedForEurope.contains(team)) {
                 uelTeams.add(team);
@@ -177,7 +176,7 @@ public class Bundesliga_League {
             leagueSpotCounter++;
         }
 
-        // UECL spot
+        // Find UECL spot (next available league position)
         while (ueclTeams.isEmpty() && leagueSpotCounter < this.teams.size()) {
             Team team = this.teams.get(leagueSpotCounter);
             if (!qualifiedForEurope.contains(team)) {
@@ -189,7 +188,7 @@ public class Bundesliga_League {
     }
 
     public void displayTable() {
-        // Final sort is done in determineEuropeanSpots, so we just display here
+        // Sorting is handled in determineEuropeanSpots
         System.out.println("Pos | Team                     | P  | W  | D  | L  | GF | GA | GD  | Pts | Elo ");
         System.out.println("------------------------------------------------------------------------------------");
 
@@ -199,17 +198,18 @@ public class Bundesliga_League {
             String qualificationMarker = "";
 
             if (uclTeams.contains(team)) {
-                qualificationMarker = (position == 1) ? " [C][UCL]" : " [UCL]";
+                qualificationMarker = (position <= 2) ? " [UCL-Q]" : ""; // Both top 2 are UCL Qualifiers
+                if (position == 1)
+                    qualificationMarker = " [C]" + qualificationMarker;
             } else if (uelTeams.contains(team)) {
                 qualificationMarker = " [UEL]";
             } else if (ueclTeams.contains(team)) {
                 qualificationMarker = " [UECL]";
             }
 
-            if (position == 16)
-                qualificationMarker += " [RPO]";
-            else if (position >= 17)
+            if (position >= 17) { // Assuming 2 direct relegations
                 qualificationMarker += " [R]";
+            }
 
             teamDisplayName += qualificationMarker.trim();
 
@@ -229,8 +229,7 @@ public class Bundesliga_League {
 
         System.out.println("------------------------------------------------------------------------------------");
         System.out.println(
-                "Legend: [C] Champions, [UCL] Champions League, [UEL] Europa League, [UECL] Europa Conference League");
-        System.out.println("        [RPO] Relegation Play-off, [R] Relegation");
-        System.out.println("Cup Winner: [DFB-Pokal: " + this.dfbPokalWinner.getName() + "]");
+                "Legend: [C] Champions, [UCL-Q] UCL Qualifiers, [UEL] Europa League, [UECL] Europa Conference League, [R] Relegation");
+        System.out.println("Cup Winner: [Turkish Cup: " + this.turkishCupWinner.getName() + "]");
     }
 }

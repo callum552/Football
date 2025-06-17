@@ -5,14 +5,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * The main class for the Swiss Super League Simulator.
  * This version simulates the 12-team league, the three-phase season with a
- * post-season split, the Swiss Cup, and features accurate European/relegation rules.
+ * post-season split, the Swiss Cup, and features accurate European/relegation
+ * rules.
  *
- * NOTE: This class has been refactored to work with the EuropeanCompetitionSimulator.
+ * NOTE: This class has been refactored to work with the
+ * EuropeanCompetitionSimulator.
  */
 public class SwissSuperLeague_League {
     private final List<Team> teams;
@@ -28,7 +29,6 @@ public class SwissSuperLeague_League {
     private final List<Team> uelTeams = new ArrayList<>();
     private final List<Team> ueclTeams = new ArrayList<>();
 
-
     public SwissSuperLeague_League() {
         this.teams = new ArrayList<>();
         this.phase1Fixtures = new ArrayList<>();
@@ -37,9 +37,17 @@ public class SwissSuperLeague_League {
     }
 
     // --- GETTERS FOR EUROPEAN QUALIFIERS ---
-    public List<Team> getUclTeams() { return uclTeams; }
-    public List<Team> getUelTeams() { return uelTeams; }
-    public List<Team> getUeclTeams() { return ueclTeams; }
+    public List<Team> getUclTeams() {
+        return uclTeams;
+    }
+
+    public List<Team> getUelTeams() {
+        return uelTeams;
+    }
+
+    public List<Team> getUeclTeams() {
+        return ueclTeams;
+    }
 
     public static void main(String[] args) {
         SwissSuperLeague_League switzerland = new SwissSuperLeague_League();
@@ -74,18 +82,18 @@ public class SwissSuperLeague_League {
 
     public void setupTeams() {
         double initialElo = 1500;
-        this.teams.add(new Team("BSC Young Boys", 90, 84, initialElo + 280));
-        this.teams.add(new Team("FC Basel", 86, 82, initialElo + 200));
-        this.teams.add(new Team("FC Lugano", 84, 80, initialElo + 150));
-        this.teams.add(new Team("Servette FC", 82, 81, initialElo + 140));
-        this.teams.add(new Team("FC St. Gallen", 81, 78, initialElo + 100));
-        this.teams.add(new Team("FC Zürich", 83, 79, initialElo + 80));
-        this.teams.add(new Team("FC Luzern", 78, 77, initialElo + 20));
-        this.teams.add(new Team("Grasshopper Club Zürich", 76, 75, initialElo));
-        this.teams.add(new Team("FC Winterthur", 72, 76, initialElo - 80));
-        this.teams.add(new Team("Yverdon-Sport FC", 70, 74, initialElo - 150));
-        this.teams.add(new Team("FC Lausanne-Sport", 68, 72, initialElo - 180));
-        this.teams.add(new Team("Stade Lausanne-Ouchy", 65, 70, initialElo - 220));
+        this.teams.add(new Team("BSC Young Boys", 90, 84, initialElo + 80)); // Adjusted
+        this.teams.add(new Team("FC Basel", 86, 82, initialElo + 60)); // Adjusted
+        this.teams.add(new Team("FC Lugano", 84, 80, initialElo + 40)); // Adjusted
+        this.teams.add(new Team("Servette FC", 82, 81, initialElo + 30)); // Adjusted
+        this.teams.add(new Team("FC St. Gallen", 81, 78, initialElo + 20)); // Adjusted
+        this.teams.add(new Team("FC Zürich", 83, 79, initialElo + 10)); // Adjusted
+        this.teams.add(new Team("FC Luzern", 78, 77, initialElo - 10)); // Adjusted
+        this.teams.add(new Team("Grasshopper Club Zürich", 76, 75, initialElo - 20)); // Adjusted
+        this.teams.add(new Team("FC Winterthur", 72, 76, initialElo - 100)); // Adjusted
+        this.teams.add(new Team("Yverdon-Sport FC", 70, 74, initialElo - 150)); // Adjusted
+        this.teams.add(new Team("FC Lausanne-Sport", 68, 72, initialElo - 180)); // Adjusted
+        this.teams.add(new Team("Stade Lausanne-Ouchy", 65, 70, initialElo - 220)); // Adjusted
         System.out.println("12 Swiss Super League teams have been created.");
     }
 
@@ -195,9 +203,9 @@ public class SwissSuperLeague_League {
 
         // If cup winner spot is not used, it passes down to 3rd place as a UEL spot
         if (uelTeams.isEmpty()) {
-            while(uelTeams.isEmpty() && leagueSpotCounter < this.teams.size()){
+            while (uelTeams.isEmpty() && leagueSpotCounter < this.teams.size()) {
                 Team team = this.teams.get(leagueSpotCounter);
-                if(!qualifiedForEurope.contains(team)){
+                if (!qualifiedForEurope.contains(team)) {
                     uelTeams.add(team);
                     qualifiedForEurope.add(team);
                 }
@@ -206,9 +214,9 @@ public class SwissSuperLeague_League {
         }
 
         // Next two available spots get UECL
-        while(ueclTeams.size() < 2 && leagueSpotCounter < this.teams.size()){
+        while (ueclTeams.size() < 2 && leagueSpotCounter < this.teams.size()) {
             Team team = this.teams.get(leagueSpotCounter);
-            if(!qualifiedForEurope.contains(team)){
+            if (!qualifiedForEurope.contains(team)) {
                 ueclTeams.add(team);
                 qualifiedForEurope.add(team);
             }
@@ -259,8 +267,10 @@ public class SwissSuperLeague_League {
                     qualificationMarker = " [UECL-Q]";
                 }
 
-                if (position == 11) qualificationMarker += " [RPO]";
-                else if (position == 12) qualificationMarker += " [R]";
+                if (position == 11)
+                    qualificationMarker += " [RPO]";
+                else if (position == 12)
+                    qualificationMarker += " [R]";
             }
 
             teamDisplayName += qualificationMarker.trim();
@@ -279,10 +289,10 @@ public class SwissSuperLeague_League {
                     team.getEloRating());
         }
 
-
         System.out.println("------------------------------------------------------------------------------------");
         if (isFinalTable) {
-            System.out.println("Legend: [C] Champion, [UCL-Q] Champions League Qualifiers, [UEL-PO] UEL Play-off, [UECL-Q] UECL Qualifiers");
+            System.out.println(
+                    "Legend: [C] Champion, [UCL-Q] Champions League Qualifiers, [UEL-PO] UEL Play-off, [UECL-Q] UECL Qualifiers");
             System.out.println("        [RPO] Relegation Play-off, [R] Relegation");
             System.out.println("Cup Winner: [Swiss Cup: " + this.swissCupWinner.getName() + "]");
         }

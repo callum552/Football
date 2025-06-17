@@ -9,10 +9,12 @@ import java.util.stream.Collectors;
 
 /**
  * The main class for the Dutch Eredivisie Simulator.
- * This version simulates the 18-team league, a simplified KNVB Beker, and the post-season
+ * This version simulates the 18-team league, a simplified KNVB Beker, and the
+ * post-season
  * European play-offs.
  *
- * NOTE: This class has been refactored to work with the EuropeanCompetitionSimulator.
+ * NOTE: This class has been refactored to work with the
+ * EuropeanCompetitionSimulator.
  */
 public class Eredivisie_League {
     private final List<Team> teams;
@@ -29,7 +31,6 @@ public class Eredivisie_League {
     private final List<Team> ueclTeams = new ArrayList<>();
     private final List<Team> ueclPlayoffTeams = new ArrayList<>();
 
-
     public Eredivisie_League() {
         this.teams = new ArrayList<>();
         this.fixtures = new ArrayList<>();
@@ -37,10 +38,17 @@ public class Eredivisie_League {
     }
 
     // --- GETTERS FOR EUROPEAN QUALIFIERS ---
-    public List<Team> getUclTeams() { return uclTeams; }
-    public List<Team> getUelTeams() { return uelTeams; }
-    public List<Team> getUeclTeams() { return ueclTeams; }
+    public List<Team> getUclTeams() {
+        return uclTeams;
+    }
 
+    public List<Team> getUelTeams() {
+        return uelTeams;
+    }
+
+    public List<Team> getUeclTeams() {
+        return ueclTeams;
+    }
 
     public static void main(String[] args) {
         Eredivisie_League eredivisie = new Eredivisie_League();
@@ -69,9 +77,9 @@ public class Eredivisie_League {
 
     public void setupTeams() {
         double initialElo = 1500;
-        this.teams.add(new Team("PSV Eindhoven", 92, 84, initialElo + 240));
-        this.teams.add(new Team("Feyenoord", 90, 85, initialElo + 220));
-        this.teams.add(new Team("Ajax", 88, 80, initialElo + 200));
+        this.teams.add(new Team("PSV Eindhoven", 92, 84, initialElo + 200)); // Adjusted
+        this.teams.add(new Team("Feyenoord", 90, 85, initialElo + 190)); // Adjusted
+        this.teams.add(new Team("Ajax", 88, 80, initialElo + 180)); // Adjusted
         this.teams.add(new Team("FC Twente", 85, 82, initialElo + 160));
         this.teams.add(new Team("AZ Alkmaar", 84, 79, initialElo + 150));
         this.teams.add(new Team("FC Utrecht", 80, 78, initialElo + 80));
@@ -99,7 +107,8 @@ public class Eredivisie_League {
         System.out.println("\n** KNVB Beker Preliminary Round **");
         List<Team> preliminaryWinners = new ArrayList<>();
         for (int i = 0; i < preliminaryTeams.size(); i += 2) {
-            preliminaryWinners.add(matchSimulator.simulateSingleMatch(preliminaryTeams.get(i), preliminaryTeams.get(i+1)));
+            preliminaryWinners
+                    .add(matchSimulator.simulateSingleMatch(preliminaryTeams.get(i), preliminaryTeams.get(i + 1)));
         }
 
         List<Team> roundOf16Teams = new ArrayList<>(teamsWithByes);
@@ -141,8 +150,12 @@ public class Eredivisie_League {
         }
 
         System.out.println("\n** European Play-off Semi-Finals **");
-        Team final1Winner = matchSimulator.simulateTwoLeggedTie(ueclPlayoffTeams.get(0), ueclPlayoffTeams.get(3)); // 5th vs 8th
-        Team final2Winner = matchSimulator.simulateTwoLeggedTie(ueclPlayoffTeams.get(1), ueclPlayoffTeams.get(2)); // 6th vs 7th
+        Team final1Winner = matchSimulator.simulateTwoLeggedTie(ueclPlayoffTeams.get(0), ueclPlayoffTeams.get(3)); // 5th
+                                                                                                                   // vs
+                                                                                                                   // 8th
+        Team final2Winner = matchSimulator.simulateTwoLeggedTie(ueclPlayoffTeams.get(1), ueclPlayoffTeams.get(2)); // 6th
+                                                                                                                   // vs
+                                                                                                                   // 7th
 
         System.out.println("\n** European Play-off Final **");
         this.ueclPlayoffWinner = matchSimulator.simulateTwoLeggedTie(final1Winner, final2Winner);
@@ -199,7 +212,6 @@ public class Eredivisie_League {
         }
     }
 
-
     public void displayTable() {
         // Final sort of the table
         this.teams.sort(Comparator.comparingInt(Team::getPoints).reversed()
@@ -216,7 +228,8 @@ public class Eredivisie_League {
 
             if (uclTeams.contains(team)) {
                 qualificationMarker = (position <= 2) ? " [UCL]" : " [UCL-Q]";
-                if(position == 1) qualificationMarker = " [C]" + qualificationMarker;
+                if (position == 1)
+                    qualificationMarker = " [C]" + qualificationMarker;
             } else if (uelTeams.contains(team)) {
                 qualificationMarker = " [UEL]";
             } else if (ueclTeams.contains(team)) {
@@ -225,8 +238,10 @@ public class Eredivisie_League {
                 qualificationMarker = " [UECL-PO]";
             }
 
-            if (position == 16) qualificationMarker += " [RPO]";
-            else if (position >= 17) qualificationMarker += " [R]";
+            if (position == 16)
+                qualificationMarker += " [RPO]";
+            else if (position >= 17)
+                qualificationMarker += " [R]";
 
             teamDisplayName += qualificationMarker.trim();
 
@@ -245,11 +260,12 @@ public class Eredivisie_League {
         }
 
         System.out.println("------------------------------------------------------------------------------------");
-        System.out.println("Legend: [C] Champions, [UCL] Champions League, [UCL-Q] UCL Qualifiers, [UEL] Europa League");
+        System.out
+                .println("Legend: [C] Champions, [UCL] Champions League, [UCL-Q] UCL Qualifiers, [UEL] Europa League");
         System.out.println("        [UECL] Conference League (Play-off Winner), [UECL-PO] Conference League Play-offs");
         System.out.println("        [RPO] Relegation Play-off, [R] Relegation");
         System.out.println("Cup Winner: [KNVB Beker: " + this.knvbBekerWinner.getName() + "]");
-        if(this.ueclPlayoffWinner != null){
+        if (this.ueclPlayoffWinner != null) {
             System.out.println("UECL Play-off Winner: " + this.ueclPlayoffWinner.getName());
         }
     }

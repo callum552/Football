@@ -9,10 +9,12 @@ import java.util.stream.Collectors;
 
 /**
  * The main class for the Spanish LaLiga Simulator.
- * This version simulates the 20-team league, a simple Copa del Rey, and features
+ * This version simulates the 20-team league, a simple Copa del Rey, and
+ * features
  * accurate European and relegation qualification rules.
  *
- * NOTE: This class has been refactored to work with the EuropeanCompetitionSimulator.
+ * NOTE: This class has been refactored to work with the
+ * EuropeanCompetitionSimulator.
  */
 public class LaLiga_League {
     private final List<Team> teams;
@@ -27,7 +29,6 @@ public class LaLiga_League {
     private final List<Team> uelTeams = new ArrayList<>();
     private final List<Team> ueclTeams = new ArrayList<>();
 
-
     public LaLiga_League() {
         this.teams = new ArrayList<>();
         this.fixtures = new ArrayList<>();
@@ -35,10 +36,17 @@ public class LaLiga_League {
     }
 
     // --- GETTERS FOR EUROPEAN QUALIFIERS ---
-    public List<Team> getUclTeams() { return uclTeams; }
-    public List<Team> getUelTeams() { return uelTeams; }
-    public List<Team> getUeclTeams() { return ueclTeams; }
+    public List<Team> getUclTeams() {
+        return uclTeams;
+    }
 
+    public List<Team> getUelTeams() {
+        return uelTeams;
+    }
+
+    public List<Team> getUeclTeams() {
+        return ueclTeams;
+    }
 
     public static void main(String[] args) {
         LaLiga_League laLiga = new LaLiga_League();
@@ -64,9 +72,9 @@ public class LaLiga_League {
 
     public void setupTeams() {
         double initialElo = 1500;
-        this.teams.add(new Team("Real Madrid", 97, 89, initialElo + 250));
-        this.teams.add(new Team("Barcelona", 94, 85, initialElo + 220));
-        this.teams.add(new Team("Atletico Madrid", 90, 87, initialElo + 190));
+        this.teams.add(new Team("Real Madrid", 97, 89, initialElo + 340));
+        this.teams.add(new Team("Barcelona", 94, 85, initialElo + 320));
+        this.teams.add(new Team("Atletico Madrid", 90, 87, initialElo + 250));
         this.teams.add(new Team("Athletic Bilbao", 85, 83, initialElo + 140));
         this.teams.add(new Team("Girona", 84, 78, initialElo + 120));
         this.teams.add(new Team("Real Sociedad", 84, 82, initialElo + 100));
@@ -109,7 +117,8 @@ public class LaLiga_League {
         List<Team> teamsWithByes = new ArrayList<>(cupTeams.subList(0, 12));
         List<Team> preliminaryWinners = new ArrayList<>();
         for (int i = 0; i < preliminaryRoundTeams.size(); i += 2) {
-            preliminaryWinners.add(matchSimulator.simulateSingleMatch(preliminaryRoundTeams.get(i), preliminaryRoundTeams.get(i+1)));
+            preliminaryWinners.add(
+                    matchSimulator.simulateSingleMatch(preliminaryRoundTeams.get(i), preliminaryRoundTeams.get(i + 1)));
         }
         List<Team> roundOf16Teams = new ArrayList<>(teamsWithByes);
         roundOf16Teams.addAll(preliminaryWinners);
@@ -175,8 +184,8 @@ public class LaLiga_League {
             leagueSpotCounter++;
         }
 
-        // Find UECL spot (next available league position)
-        while (ueclTeams.isEmpty() && leagueSpotCounter < this.teams.size()) {
+        // Find UECL spot (now filling up to 2 spots instead of just one)
+        while (ueclTeams.size() < 2 && leagueSpotCounter < this.teams.size()) { // Changed from ueclTeams.isEmpty()
             Team team = this.teams.get(leagueSpotCounter);
             if (!qualifiedForEurope.contains(team)) {
                 ueclTeams.add(team);
@@ -185,7 +194,6 @@ public class LaLiga_League {
             leagueSpotCounter++;
         }
     }
-
 
     public void displayTable() {
         // Sorting is handled in determineEuropeanSpots
@@ -226,7 +234,8 @@ public class LaLiga_League {
         }
 
         System.out.println("------------------------------------------------------------------------------------");
-        System.out.println("Legend: [C] Champions, [UCL] Champions League, [UEL] Europa League, [UECL] Europa Conference League, [R] Relegation");
+        System.out.println(
+                "Legend: [C] Champions, [UCL] Champions League, [UEL] Europa League, [UECL] Europa Conference League, [R] Relegation");
         System.out.println("Cup Winner: [Copa del Rey: " + this.copaDelReyWinner.getName() + "]");
     }
 }

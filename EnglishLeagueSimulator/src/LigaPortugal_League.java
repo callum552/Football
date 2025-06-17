@@ -12,7 +12,8 @@ import java.util.stream.Collectors;
  * This version simulates the 18-team league, a Taça de Portugal, and is tuned
  * to ensure the dominance of the "Big Three".
  *
- * NOTE: This class has been refactored to work with the EuropeanCompetitionSimulator.
+ * NOTE: This class has been refactored to work with the
+ * EuropeanCompetitionSimulator.
  */
 public class LigaPortugal_League {
     private final List<Team> teams;
@@ -34,10 +35,17 @@ public class LigaPortugal_League {
     }
 
     // --- GETTERS FOR EUROPEAN QUALIFIERS ---
-    public List<Team> getUclTeams() { return uclTeams; }
-    public List<Team> getUelTeams() { return uelTeams; }
-    public List<Team> getUeclTeams() { return ueclTeams; }
+    public List<Team> getUclTeams() {
+        return uclTeams;
+    }
 
+    public List<Team> getUelTeams() {
+        return uelTeams;
+    }
+
+    public List<Team> getUeclTeams() {
+        return ueclTeams;
+    }
 
     public static void main(String[] args) {
         LigaPortugal_League ligaPortugal = new LigaPortugal_League();
@@ -63,9 +71,9 @@ public class LigaPortugal_League {
 
     public void setupTeams() {
         double initialElo = 1500;
-        this.teams.add(new Team("SL Benfica", 92, 85, initialElo + 250));
-        this.teams.add(new Team("FC Porto", 91, 84, initialElo + 240));
-        this.teams.add(new Team("Sporting CP", 90, 83, initialElo + 230));
+        this.teams.add(new Team("SL Benfica", 92, 85, initialElo + 210)); // Adjusted
+        this.teams.add(new Team("FC Porto", 91, 84, initialElo + 200)); // Adjusted
+        this.teams.add(new Team("Sporting CP", 90, 83, initialElo + 190)); // Adjusted
         this.teams.add(new Team("SC Braga", 85, 78, initialElo + 150));
         this.teams.add(new Team("Vitoria de Guimaraes", 80, 79, initialElo + 100));
         this.teams.add(new Team("Moreirense", 76, 77, initialElo + 20));
@@ -93,7 +101,8 @@ public class LigaPortugal_League {
         System.out.println("\n** Taça de Portugal Preliminary Round **");
         List<Team> preliminaryWinners = new ArrayList<>();
         for (int i = 0; i < preliminaryTeams.size(); i += 2) {
-            preliminaryWinners.add(matchSimulator.simulateSingleMatch(preliminaryTeams.get(i), preliminaryTeams.get(i+1)));
+            preliminaryWinners
+                    .add(matchSimulator.simulateSingleMatch(preliminaryTeams.get(i), preliminaryTeams.get(i + 1)));
         }
 
         List<Team> roundOf16Teams = new ArrayList<>(teamsWithByes);
@@ -201,8 +210,10 @@ public class LigaPortugal_League {
                 qualificationMarker = " [UECL]";
             }
 
-            if (position == 16) qualificationMarker += " [RPO]";
-            else if (position >= 17) qualificationMarker += " [R]";
+            if (position == 16)
+                qualificationMarker += " [RPO]";
+            else if (position >= 17)
+                qualificationMarker += " [R]";
 
             teamDisplayName += qualificationMarker.trim();
 
@@ -221,7 +232,8 @@ public class LigaPortugal_League {
         }
 
         System.out.println("------------------------------------------------------------------------------------");
-        System.out.println("Legend: [C] Champions, [UCL] Champions League, [UCL-Q] UCL Qualifiers, [UEL] Europa League, [UECL] Europa Conference League");
+        System.out.println(
+                "Legend: [C] Champions, [UCL] Champions League, [UCL-Q] UCL Qualifiers, [UEL] Europa League, [UECL] Europa Conference League");
         System.out.println("        [RPO] Relegation Play-off, [R] Relegation");
         System.out.println("Cup Winner: [Taça de Portugal: " + this.tacaDePortugalWinner.getName() + "]");
     }

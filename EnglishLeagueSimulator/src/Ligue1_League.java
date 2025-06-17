@@ -12,7 +12,8 @@ import java.util.stream.Collectors;
  * This version simulates the 18-team league, a Coupe de France, and features
  * accurate European and relegation qualification rules.
  *
- * NOTE: This class has been refactored to work with the EuropeanCompetitionSimulator.
+ * NOTE: This class has been refactored to work with the
+ * EuropeanCompetitionSimulator.
  */
 public class Ligue1_League {
     private final List<Team> teams;
@@ -27,7 +28,6 @@ public class Ligue1_League {
     private final List<Team> uelTeams = new ArrayList<>();
     private final List<Team> ueclTeams = new ArrayList<>();
 
-
     public Ligue1_League() {
         this.teams = new ArrayList<>();
         this.fixtures = new ArrayList<>();
@@ -35,10 +35,17 @@ public class Ligue1_League {
     }
 
     // --- GETTERS FOR EUROPEAN QUALIFIERS ---
-    public List<Team> getUclTeams() { return uclTeams; }
-    public List<Team> getUelTeams() { return uelTeams; }
-    public List<Team> getUeclTeams() { return ueclTeams; }
+    public List<Team> getUclTeams() {
+        return uclTeams;
+    }
 
+    public List<Team> getUelTeams() {
+        return uelTeams;
+    }
+
+    public List<Team> getUeclTeams() {
+        return ueclTeams;
+    }
 
     public static void main(String[] args) {
         Ligue1_League ligue1 = new Ligue1_League();
@@ -64,9 +71,9 @@ public class Ligue1_League {
 
     public void setupTeams() {
         double initialElo = 1500;
-        this.teams.add(new Team("Paris Saint-Germain", 98, 86, initialElo + 300));
-        this.teams.add(new Team("AS Monaco", 88, 80, initialElo + 180));
-        this.teams.add(new Team("Marseille", 86, 82, initialElo + 160));
+        this.teams.add(new Team("Paris Saint-Germain", 98, 86, initialElo + 320)); // Adjusted
+        this.teams.add(new Team("AS Monaco", 88, 80, initialElo + 170)); // Adjusted
+        this.teams.add(new Team("Marseille", 86, 82, initialElo + 150)); // Adjusted
         this.teams.add(new Team("Lille", 85, 84, initialElo + 150));
         this.teams.add(new Team("Lyon", 84, 81, initialElo + 130));
         this.teams.add(new Team("Nice", 79, 85, initialElo + 90));
@@ -94,7 +101,8 @@ public class Ligue1_League {
         System.out.println("\n** Coupe de France Preliminary Round **");
         List<Team> preliminaryWinners = new ArrayList<>();
         for (int i = 0; i < preliminaryTeams.size(); i += 2) {
-            preliminaryWinners.add(matchSimulator.simulateSingleMatch(preliminaryTeams.get(i), preliminaryTeams.get(i+1)));
+            preliminaryWinners
+                    .add(matchSimulator.simulateSingleMatch(preliminaryTeams.get(i), preliminaryTeams.get(i + 1)));
         }
 
         List<Team> roundOf16Teams = new ArrayList<>(teamsWithByes);
@@ -198,8 +206,10 @@ public class Ligue1_League {
                 qualificationMarker = " [UECL]";
             }
 
-            if (position == 16) qualificationMarker += " [RPO]";
-            else if (position >= 17) qualificationMarker += " [R]";
+            if (position == 16)
+                qualificationMarker += " [RPO]";
+            else if (position >= 17)
+                qualificationMarker += " [R]";
 
             teamDisplayName += qualificationMarker.trim();
 
@@ -218,7 +228,8 @@ public class Ligue1_League {
         }
 
         System.out.println("------------------------------------------------------------------------------------");
-        System.out.println("Legend: [C] Champions, [UCL] Champions League, [UEL] Europa League, [UECL] Europa Conference League");
+        System.out.println(
+                "Legend: [C] Champions, [UCL] Champions League, [UEL] Europa League, [UECL] Europa Conference League");
         System.out.println("        [RPO] Relegation Play-off, [R] Relegation");
         System.out.println("Cup Winner: [Coupe de France: " + this.coupeDeFranceWinner.getName() + "]");
     }

@@ -12,9 +12,11 @@ import java.util.stream.Collectors;
 /**
  * The main class for the Austrian Bundesliga Simulator.
  * This version simulates the 12-team league, the unique post-season split with
- * points halving, a simplified ÖFB-Cup, and features accurate head-to-head tie-breaker rules.
+ * points halving, a simplified ÖFB-Cup, and features accurate head-to-head
+ * tie-breaker rules.
  *
- * NOTE: This class has been refactored to work with the EuropeanCompetitionSimulator.
+ * NOTE: This class has been refactored to work with the
+ * EuropeanCompetitionSimulator.
  */
 public class AustrianBundesliga_League {
     private final List<Team> teams;
@@ -48,10 +50,17 @@ public class AustrianBundesliga_League {
     }
 
     // --- GETTERS FOR EUROPEAN QUALIFIERS ---
-    public List<Team> getUclTeams() { return uclTeams; }
-    public List<Team> getUelTeams() { return uelTeams; }
-    public List<Team> getUeclTeams() { return ueclTeams; }
+    public List<Team> getUclTeams() {
+        return uclTeams;
+    }
 
+    public List<Team> getUelTeams() {
+        return uelTeams;
+    }
+
+    public List<Team> getUeclTeams() {
+        return ueclTeams;
+    }
 
     public static void main(String[] args) {
         AustrianBundesliga_League austria = new AustrianBundesliga_League();
@@ -86,8 +95,8 @@ public class AustrianBundesliga_League {
 
     public void setupTeams() {
         double initialElo = 1500;
-        this.teams.add(new Team("RB Salzburg", 96, 85, initialElo + 350));
-        this.teams.add(new Team("Sturm Graz", 85, 80, initialElo + 180));
+        this.teams.add(new Team("RB Salzburg", 96, 85, initialElo + 200)); // Adjusted
+        this.teams.add(new Team("Sturm Graz", 85, 80, initialElo + 150)); // Adjusted
         this.teams.add(new Team("LASK", 82, 79, initialElo + 150));
         this.teams.add(new Team("Rapid Vienna", 80, 78, initialElo + 120));
         this.teams.add(new Team("Austria Vienna", 78, 77, initialElo + 80));
@@ -110,7 +119,8 @@ public class AustrianBundesliga_League {
         System.out.println("\n** ÖFB-Cup Preliminary Round **");
         List<Team> preliminaryWinners = new ArrayList<>();
         for (int i = 0; i < preliminaryTeams.size(); i += 2) {
-            preliminaryWinners.add(matchSimulator.simulateSingleMatch(preliminaryTeams.get(i), preliminaryTeams.get(i + 1)));
+            preliminaryWinners
+                    .add(matchSimulator.simulateSingleMatch(preliminaryTeams.get(i), preliminaryTeams.get(i + 1)));
         }
 
         List<Team> quarterFinalists = new ArrayList<>(teamsWithByes);
@@ -158,7 +168,7 @@ public class AustrianBundesliga_League {
         championshipRoundTeams = new ArrayList<>(this.teams.subList(0, 6));
         relegationRoundTeams = new ArrayList<>(this.teams.subList(6, 12));
 
-        for(Team team : this.teams) {
+        for (Team team : this.teams) {
             team.points = (int) Math.ceil(team.points / 2.0);
         }
 
@@ -210,11 +220,12 @@ public class AustrianBundesliga_League {
         // 3. Conference League
         int leagueSpotCounter = 2; // Start from 3rd place
 
-        // If cup winner is already in UCL, UEL spot from cup is passed down to 3rd place
-        if(qualifiedForEurope.contains(ofbCupWinner) || uelTeams.isEmpty()){
-            while(uelTeams.size() < 1 && leagueSpotCounter < finalOrder.size()){
+        // If cup winner is already in UCL, UEL spot from cup is passed down to 3rd
+        // place
+        if (qualifiedForEurope.contains(ofbCupWinner) || uelTeams.isEmpty()) {
+            while (uelTeams.size() < 1 && leagueSpotCounter < finalOrder.size()) {
                 Team team = finalOrder.get(leagueSpotCounter);
-                if(!qualifiedForEurope.contains(team)){
+                if (!qualifiedForEurope.contains(team)) {
                     uelTeams.add(team); // [UEL-Q]
                     qualifiedForEurope.add(team);
                 }
@@ -223,16 +234,15 @@ public class AustrianBundesliga_League {
         }
 
         // Next two available spots get UECL-Q
-        while(ueclTeams.size() < 2 && leagueSpotCounter < finalOrder.size()){
+        while (ueclTeams.size() < 2 && leagueSpotCounter < finalOrder.size()) {
             Team team = finalOrder.get(leagueSpotCounter);
-            if(!qualifiedForEurope.contains(team)){
+            if (!qualifiedForEurope.contains(team)) {
                 ueclTeams.add(team); // [UECL-Q]
                 qualifiedForEurope.add(team);
             }
             leagueSpotCounter++;
         }
     }
-
 
     public void displayTable(String title, boolean isFinal) {
         System.out.println("\n--- " + title + " ---");
@@ -258,12 +268,15 @@ public class AustrianBundesliga_League {
         allMatches.addAll(playoffFixtures);
 
         return (t1, t2) -> {
-            if (t1.getPoints() != t2.getPoints()) return Integer.compare(t2.getPoints(), t1.getPoints());
+            if (t1.getPoints() != t2.getPoints())
+                return Integer.compare(t2.getPoints(), t1.getPoints());
 
-            List<Team> tiedGroup = this.teams.stream().filter(t -> t.getPoints() == t1.getPoints()).collect(Collectors.toList());
+            List<Team> tiedGroup = this.teams.stream().filter(t -> t.getPoints() == t1.getPoints())
+                    .collect(Collectors.toList());
             if (tiedGroup.size() > 1) {
                 Map<Team, HeadToHeadStats> h2hStats = new HashMap<>();
-                for (Team t : tiedGroup) h2hStats.put(t, new HeadToHeadStats());
+                for (Team t : tiedGroup)
+                    h2hStats.put(t, new HeadToHeadStats());
 
                 for (Match m : allMatches) {
                     if (m.homeGoals != -1 && tiedGroup.contains(m.homeTeam) && tiedGroup.contains(m.awayTeam)) {
@@ -273,23 +286,34 @@ public class AustrianBundesliga_League {
                         homeStats.goalsAgainst += m.awayGoals;
                         awayStats.goalsFor += m.awayGoals;
                         awayStats.goalsAgainst += m.homeGoals;
-                        if (m.homeGoals > m.awayGoals) homeStats.points += 3;
-                        else if (m.homeGoals == m.awayGoals) { homeStats.points += 1; awayStats.points += 1; }
-                        else { awayStats.points += 3; }
+                        if (m.homeGoals > m.awayGoals)
+                            homeStats.points += 3;
+                        else if (m.homeGoals == m.awayGoals) {
+                            homeStats.points += 1;
+                            awayStats.points += 1;
+                        } else {
+                            awayStats.points += 3;
+                        }
                     }
                 }
                 HeadToHeadStats stats1 = h2hStats.get(t1);
                 HeadToHeadStats stats2 = h2hStats.get(t2);
-                if (stats1.points != stats2.points) return Integer.compare(stats2.points, stats1.points);
+                if (stats1.points != stats2.points)
+                    return Integer.compare(stats2.points, stats1.points);
 
                 stats1.goalDifference = stats1.goalsFor - stats1.goalsAgainst;
                 stats2.goalDifference = stats2.goalsFor - stats2.goalsAgainst;
-                if (stats1.goalDifference != stats2.goalDifference) return Integer.compare(stats2.goalDifference, stats1.goalDifference);
-                if(stats1.goalsFor != stats2.goalsFor) return Integer.compare(stats2.goalsFor, stats1.goalsFor);
+                if (stats1.goalDifference != stats2.goalDifference)
+                    return Integer.compare(stats2.goalDifference, stats1.goalDifference);
+                if (stats1.goalsFor != stats2.goalsFor)
+                    return Integer.compare(stats2.goalsFor, stats1.goalsFor);
             }
-            if (t1.getGoalDifference() != t2.getGoalDifference()) return Integer.compare(t2.getGoalDifference(), t1.getGoalDifference());
-            if (t1.getGoalsFor() != t2.getGoalsFor()) return Integer.compare(t2.getGoalsFor(), t1.getGoalsFor());
-            if(t1.getWins() != t2.getWins()) return Integer.compare(t2.getWins(), t1.getWins());
+            if (t1.getGoalDifference() != t2.getGoalDifference())
+                return Integer.compare(t2.getGoalDifference(), t1.getGoalDifference());
+            if (t1.getGoalsFor() != t2.getGoalsFor())
+                return Integer.compare(t2.getGoalsFor(), t1.getGoalsFor());
+            if (t1.getWins() != t2.getWins())
+                return Integer.compare(t2.getWins(), t1.getWins());
 
             return t1.getName().compareTo(t2.getName());
         };
@@ -305,15 +329,16 @@ public class AustrianBundesliga_League {
             String qualificationMarker = "";
 
             if (isFinal) {
-                if(uclTeams.contains(team)){
+                if (uclTeams.contains(team)) {
                     qualificationMarker = position == 1 ? " [C][UCL]" : " [UCL-Q]";
-                } else if (uelTeams.contains(team)){
+                } else if (uelTeams.contains(team)) {
                     qualificationMarker = ofbCupWinner.equals(team) ? " [UEL-PO]" : " [UEL-Q]";
-                } else if (ueclTeams.contains(team)){
+                } else if (ueclTeams.contains(team)) {
                     qualificationMarker = " [UECL-Q]";
                 }
 
-                if (position == 12) qualificationMarker += " [R]";
+                if (position == 12)
+                    qualificationMarker += " [R]";
             }
 
             teamDisplayName += qualificationMarker.trim();
@@ -334,7 +359,8 @@ public class AustrianBundesliga_League {
 
         if (isFinal && startPosition == 7) {
             System.out.println("------------------------------------------------------------------------------------");
-            System.out.println("Legend: [C] Champions, [UCL] Champions League, [UCL-Q] UCL Qualifiers, [UEL-PO] UEL Play-off, [UEL-Q] UEL Qualifiers");
+            System.out.println(
+                    "Legend: [C] Champions, [UCL] Champions League, [UCL-Q] UCL Qualifiers, [UEL-PO] UEL Play-off, [UEL-Q] UEL Qualifiers");
             System.out.println("        [UECL-Q] UECL Qualifiers, [R] Relegation");
             System.out.println("Cup Winner: [ÖFB-Cup: " + this.ofbCupWinner.getName() + "]");
         }

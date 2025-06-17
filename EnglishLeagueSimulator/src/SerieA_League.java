@@ -12,7 +12,8 @@ import java.util.stream.Collectors;
  * This version simulates the 20-team league, a basic Coppa Italia, and features
  * the crucial title/relegation play-off tiebreaker rule.
  *
- * NOTE: This class has been refactored to work with the EuropeanCompetitionSimulator.
+ * NOTE: This class has been refactored to work with the
+ * EuropeanCompetitionSimulator.
  */
 public class SerieA_League {
     private final List<Team> teams;
@@ -29,7 +30,6 @@ public class SerieA_League {
     private final List<Team> uelTeams = new ArrayList<>();
     private final List<Team> ueclTeams = new ArrayList<>();
 
-
     public SerieA_League() {
         this.teams = new ArrayList<>();
         this.fixtures = new ArrayList<>();
@@ -37,10 +37,17 @@ public class SerieA_League {
     }
 
     // --- GETTERS FOR EUROPEAN QUALIFIERS ---
-    public List<Team> getUclTeams() { return uclTeams; }
-    public List<Team> getUelTeams() { return uelTeams; }
-    public List<Team> getUeclTeams() { return ueclTeams; }
+    public List<Team> getUclTeams() {
+        return uclTeams;
+    }
 
+    public List<Team> getUelTeams() {
+        return uelTeams;
+    }
+
+    public List<Team> getUeclTeams() {
+        return ueclTeams;
+    }
 
     public static void main(String[] args) {
         SerieA_League serieA = new SerieA_League();
@@ -69,10 +76,10 @@ public class SerieA_League {
 
     public void setupTeams() {
         double initialElo = 1500;
-        this.teams.add(new Team("Inter Milan", 92, 89, initialElo + 210));
-        this.teams.add(new Team("AC Milan", 89, 85, initialElo + 190));
-        this.teams.add(new Team("Juventus", 87, 88, initialElo + 180));
-        this.teams.add(new Team("Napoli", 88, 82, initialElo + 160));
+        this.teams.add(new Team("Inter Milan", 92, 89, initialElo + 290)); // Adjusted
+        this.teams.add(new Team("AC Milan", 89, 85, initialElo + 270)); // Adjusted
+        this.teams.add(new Team("Juventus", 87, 88, initialElo + 240)); // Adjusted
+        this.teams.add(new Team("Napoli", 88, 82, initialElo + 200)); // Adjusted
         this.teams.add(new Team("AS Roma", 85, 84, initialElo + 150));
         this.teams.add(new Team("Atalanta", 86, 80, initialElo + 140));
         this.teams.add(new Team("Lazio", 84, 83, initialElo + 130));
@@ -114,7 +121,8 @@ public class SerieA_League {
         List<Team> teamsWithByes = new ArrayList<>(cupTeams.subList(0, 12));
         List<Team> preliminaryWinners = new ArrayList<>();
         for (int i = 0; i < preliminaryRoundTeams.size(); i += 2) {
-            preliminaryWinners.add(matchSimulator.simulateSingleMatch(preliminaryRoundTeams.get(i), preliminaryRoundTeams.get(i+1)));
+            preliminaryWinners.add(
+                    matchSimulator.simulateSingleMatch(preliminaryRoundTeams.get(i), preliminaryRoundTeams.get(i + 1)));
         }
         List<Team> roundOf16Teams = new ArrayList<>(teamsWithByes);
         roundOf16Teams.addAll(preliminaryWinners);
@@ -171,7 +179,8 @@ public class SerieA_League {
     }
 
     public void determineEuropeanSpots() {
-        // Sort table using the standard tie-breakers first to determine initial placings
+        // Sort table using the standard tie-breakers first to determine initial
+        // placings
         this.teams.sort(Comparator.comparingInt(Team::getPoints).reversed()
                 .thenComparingInt(Team::getGoalDifference).reversed()
                 .thenComparingInt(Team::getGoalsFor).reversed());
@@ -210,24 +219,26 @@ public class SerieA_League {
         }
     }
 
-
     public void displayTable() {
         // Final sort of the table, accounting for playoffs
         this.teams.sort((t1, t2) -> {
-            if (t1.getPoints() != t2.getPoints()) return Integer.compare(t2.getPoints(), t1.getPoints());
+            if (t1.getPoints() != t2.getPoints())
+                return Integer.compare(t2.getPoints(), t1.getPoints());
             // If a title play-off happened, the winner is first
             if (titlePlayoffWinner != null && (t1.equals(titlePlayoffWinner) || t2.equals(titlePlayoffWinner))) {
                 return t1.equals(titlePlayoffWinner) ? -1 : 1;
             }
             // If a relegation play-off happened, the loser is lower
-            if (relegationPlayoffLoser != null && (t1.equals(relegationPlayoffLoser) || t2.equals(relegationPlayoffLoser))) {
+            if (relegationPlayoffLoser != null
+                    && (t1.equals(relegationPlayoffLoser) || t2.equals(relegationPlayoffLoser))) {
                 return t1.equals(relegationPlayoffLoser) ? 1 : -1;
             }
-            if (t1.getGoalDifference() != t2.getGoalDifference()) return Integer.compare(t2.getGoalDifference(), t1.getGoalDifference());
-            if (t1.getGoalsFor() != t2.getGoalsFor()) return Integer.compare(t2.getGoalsFor(), t1.getGoalsFor());
+            if (t1.getGoalDifference() != t2.getGoalDifference())
+                return Integer.compare(t2.getGoalDifference(), t1.getGoalDifference());
+            if (t1.getGoalsFor() != t2.getGoalsFor())
+                return Integer.compare(t2.getGoalsFor(), t1.getGoalsFor());
             return t1.getName().compareTo(t2.getName());
         });
-
 
         System.out.println("Pos | Team                     | P  | W  | D  | L  | GF | GA | GD  | Pts | Elo ");
         System.out.println("------------------------------------------------------------------------------------");
@@ -250,13 +261,14 @@ public class SerieA_League {
             // Relegation logic now accounts for the playoff loser
             if (team.equals(relegationPlayoffLoser)) {
                 qualificationMarker += " [R]";
-            } else if (position >= 18 && (this.teams.indexOf(team) > 16) ) {
-                // A bit more robust check for teams in the relegation zone that weren't the playoff winner
-                if (relegationPlayoffLoser == null || !team.equals(this.teams.stream().filter(t -> t.getPoints() == relegationPlayoffLoser.getPoints()).findFirst().get() ) ) {
+            } else if (position >= 18 && (this.teams.indexOf(team) > 16)) {
+                // A bit more robust check for teams in the relegation zone that weren't the
+                // playoff winner
+                if (relegationPlayoffLoser == null || !team.equals(this.teams.stream()
+                        .filter(t -> t.getPoints() == relegationPlayoffLoser.getPoints()).findFirst().get())) {
                     qualificationMarker += " [R]";
                 }
             }
-
 
             teamDisplayName += qualificationMarker.trim();
 
@@ -275,7 +287,8 @@ public class SerieA_League {
         }
 
         System.out.println("------------------------------------------------------------------------------------");
-        System.out.println("Legend: [C] Champions, [UCL] Champions League, [UEL] Europa League, [UECL] Europa Conference League, [R] Relegation");
+        System.out.println(
+                "Legend: [C] Champions, [UCL] Champions League, [UEL] Europa League, [UECL] Europa Conference League, [R] Relegation");
         System.out.println("Cup Winner: [Coppa Italia: " + this.coppaItaliaWinner.getName() + "]");
     }
 }

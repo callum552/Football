@@ -8,10 +8,12 @@ import java.util.Set;
 
 /**
  * The main class for the English Premier League Simulator.
- * This version simulates the 20-team league, a scaled back FA and League Cup with those teams,
+ * This version simulates the 20-team league, a scaled back FA and League Cup
+ * with those teams,
  * and features the correct, multi-stage tie-breaker rules.
  *
- * NOTE: This class has been refactored to work with the EuropeanCompetitionSimulator.
+ * NOTE: This class has been refactored to work with the
+ * EuropeanCompetitionSimulator.
  */
 public class Premier_League {
     private final List<Team> teams;
@@ -27,7 +29,6 @@ public class Premier_League {
     private List<Team> uelTeams = new ArrayList<>();
     private List<Team> ueclTeams = new ArrayList<>();
 
-
     public Premier_League() {
         this.teams = new ArrayList<>();
         this.fixtures = new ArrayList<>();
@@ -35,10 +36,17 @@ public class Premier_League {
     }
 
     // --- GETTERS FOR QUALIFIED TEAMS ---
-    public List<Team> getUclTeams() { return uclTeams; }
-    public List<Team> getUelTeams() { return uelTeams; }
-    public List<Team> getUeclTeams() { return ueclTeams; }
+    public List<Team> getUclTeams() {
+        return uclTeams;
+    }
 
+    public List<Team> getUelTeams() {
+        return uelTeams;
+    }
+
+    public List<Team> getUeclTeams() {
+        return ueclTeams;
+    }
 
     public static void main(String[] args) {
         Premier_League premierLeague = new Premier_League();
@@ -64,14 +72,14 @@ public class Premier_League {
 
     public void setupTeams() {
         double initialElo = 1500;
-        this.teams.add(new Team("Manchester City", 92, 88, initialElo + 200));
-        this.teams.add(new Team("Arsenal", 90, 86, initialElo + 180));
-        this.teams.add(new Team("Liverpool", 88, 89, initialElo + 175));
-        this.teams.add(new Team("Manchester United", 87, 82, initialElo + 160));
-        this.teams.add(new Team("Tottenham Hotspur", 89, 83, initialElo + 150));
-        this.teams.add(new Team("Chelsea", 85, 84, initialElo + 140));
-        this.teams.add(new Team("Newcastle United", 84, 80, initialElo + 100));
-        this.teams.add(new Team("Aston Villa", 83, 79, initialElo + 90));
+        this.teams.add(new Team("Manchester City", 92, 88, initialElo + 330)); // Adjusted
+        this.teams.add(new Team("Arsenal", 90, 86, initialElo + 310)); // Adjusted
+        this.teams.add(new Team("Liverpool", 88, 89, initialElo + 300)); // Adjusted
+        this.teams.add(new Team("Manchester United", 87, 82, initialElo + 240)); // Adjusted
+        this.teams.add(new Team("Tottenham Hotspur", 89, 83, initialElo + 200)); // Adjusted
+        this.teams.add(new Team("Chelsea", 85, 84, initialElo + 190)); // Adjusted
+        this.teams.add(new Team("Newcastle United", 84, 80, initialElo + 150)); // Adjusted
+        this.teams.add(new Team("Aston Villa", 83, 79, initialElo + 140)); // Adjusted
         this.teams.add(new Team("Brighton & Hove Albion", 80, 81, initialElo + 50));
         this.teams.add(new Team("West Ham United", 79, 78, initialElo));
         this.teams.add(new Team("Wolverhampton Wanderers", 77, 76, initialElo - 10));
@@ -111,15 +119,17 @@ public class Premier_League {
 
     /**
      * NEW METHOD: Simulates an entire knockout cup from start to finish.
-     * @param teams The list of teams participating in the cup.
+     * 
+     * @param teams   The list of teams participating in the cup.
      * @param cupName The name of the cup for display purposes.
      * @return The winning Team.
      */
     private Team runFullKnockoutTournament(List<Team> teams, String cupName) {
         List<Team> currentRoundTeams = new ArrayList<>(teams);
 
-        // Simplified: For 20 teams, we'll have a preliminary round for 8 teams to get down to 16
-        if(currentRoundTeams.size() > 16) {
+        // Simplified: For 20 teams, we'll have a preliminary round for 8 teams to get
+        // down to 16
+        if (currentRoundTeams.size() > 16) {
             System.out.println("\n** " + cupName + " Preliminary Round **");
             List<Team> preliminaryWinners = new ArrayList<>();
             // Sort to ensure lower-ranked teams play this round
@@ -127,20 +137,26 @@ public class Premier_League {
             List<Team> teamsInRound = currentRoundTeams.subList(0, 8);
             List<Team> teamsWithByes = currentRoundTeams.subList(8, 20);
 
-            for(int i = 0; i < teamsInRound.size(); i += 2) {
-                preliminaryWinners.add(matchSimulator.simulateSingleMatch(teamsInRound.get(i), teamsInRound.get(i + 1)));
+            for (int i = 0; i < teamsInRound.size(); i += 2) {
+                preliminaryWinners
+                        .add(matchSimulator.simulateSingleMatch(teamsInRound.get(i), teamsInRound.get(i + 1)));
             }
             currentRoundTeams = new ArrayList<>(teamsWithByes);
             currentRoundTeams.addAll(preliminaryWinners);
         }
 
-        while(currentRoundTeams.size() > 1) {
+        while (currentRoundTeams.size() > 1) {
             String roundName;
-            if (currentRoundTeams.size() <= 2) roundName = "Final";
-            else if (currentRoundTeams.size() <= 4) roundName = "Semi-Finals";
-            else if (currentRoundTeams.size() <= 8) roundName = "Quarter-Finals";
-            else if (currentRoundTeams.size() <= 16) roundName = "Round of 16";
-            else roundName = "Early Round";
+            if (currentRoundTeams.size() <= 2)
+                roundName = "Final";
+            else if (currentRoundTeams.size() <= 4)
+                roundName = "Semi-Finals";
+            else if (currentRoundTeams.size() <= 8)
+                roundName = "Quarter-Finals";
+            else if (currentRoundTeams.size() <= 16)
+                roundName = "Round of 16";
+            else
+                roundName = "Early Round";
 
             System.out.println("\n** " + cupName + " " + roundName + " **");
             currentRoundTeams = simulateKnockoutRound(currentRoundTeams);
@@ -157,7 +173,6 @@ public class Premier_League {
         return winners;
     }
 
-
     public void generateFixtures() {
         for (Team homeTeam : this.teams) {
             for (Team awayTeam : this.teams) {
@@ -168,7 +183,6 @@ public class Premier_League {
         }
         System.out.println(this.fixtures.size() + " league matches have been scheduled.");
     }
-
 
     public void determineEuropeanSpots() {
         this.teams.sort(Comparator.comparingInt(Team::getPoints).reversed()
@@ -219,7 +233,6 @@ public class Premier_League {
         }
     }
 
-
     public void displayTable() {
         System.out.println("Pos | Team                     | P  | W  | D  | L  | GF | GA | GD  | Pts | Elo ");
         System.out.println("------------------------------------------------------------------------------------");
@@ -257,7 +270,9 @@ public class Premier_League {
                     team.getEloRating());
         }
         System.out.println("------------------------------------------------------------------------------------");
-        System.out.println("Legend: [C] Champions, [UCL] Champions League, [UEL] Europa League, [UECL] Europa Conference League, [R] Relegation");
-        System.out.println("Cup Winners: [FA Cup: " + this.faCupWinner.getName() + "] [League Cup: " + this.leagueCupWinner.getName() + "]");
+        System.out.println(
+                "Legend: [C] Champions, [UCL] Champions League, [UEL] Europa League, [UECL] Europa Conference League, [R] Relegation");
+        System.out.println("Cup Winners: [FA Cup: " + this.faCupWinner.getName() + "] [League Cup: "
+                + this.leagueCupWinner.getName() + "]");
     }
 }

@@ -12,7 +12,8 @@ import java.util.stream.Collectors;
  * This version simulates the 16-team league, the complex post-season play-offs,
  * a simple Belgian Cup, and features accurate European/relegation rules.
  *
- * NOTE: This class has been refactored to work with the EuropeanCompetitionSimulator.
+ * NOTE: This class has been refactored to work with the
+ * EuropeanCompetitionSimulator.
  */
 public class BelgianProLeague_League {
     private final List<Team> teams;
@@ -32,7 +33,6 @@ public class BelgianProLeague_League {
     private final List<Team> uelTeams = new ArrayList<>();
     private final List<Team> ueclTeams = new ArrayList<>();
 
-
     public BelgianProLeague_League() {
         this.teams = new ArrayList<>();
         this.phase1Fixtures = new ArrayList<>();
@@ -42,10 +42,17 @@ public class BelgianProLeague_League {
     }
 
     // --- GETTERS FOR EUROPEAN QUALIFIERS ---
-    public List<Team> getUclTeams() { return uclTeams; }
-    public List<Team> getUelTeams() { return uelTeams; }
-    public List<Team> getUeclTeams() { return ueclTeams; }
+    public List<Team> getUclTeams() {
+        return uclTeams;
+    }
 
+    public List<Team> getUelTeams() {
+        return uelTeams;
+    }
+
+    public List<Team> getUeclTeams() {
+        return ueclTeams;
+    }
 
     public static void main(String[] args) {
         BelgianProLeague_League belgium = new BelgianProLeague_League();
@@ -80,9 +87,9 @@ public class BelgianProLeague_League {
 
     public void setupTeams() {
         double initialElo = 1500;
-        this.teams.add(new Team("Club Brugge", 88, 82, initialElo + 250));
-        this.teams.add(new Team("Anderlecht", 86, 83, initialElo + 220));
-        this.teams.add(new Team("Union Saint-Gilloise", 87, 81, initialElo + 210));
+        this.teams.add(new Team("Club Brugge", 88, 82, initialElo + 180)); // Adjusted
+        this.teams.add(new Team("Anderlecht", 86, 83, initialElo + 170)); // Adjusted
+        this.teams.add(new Team("Union Saint-Gilloise", 87, 81, initialElo + 160)); // Adjusted
         this.teams.add(new Team("KRC Genk", 85, 78, initialElo + 180));
         this.teams.add(new Team("KAA Gent", 84, 79, initialElo + 170));
         this.teams.add(new Team("Antwerp", 82, 80, initialElo + 150));
@@ -210,7 +217,7 @@ public class BelgianProLeague_League {
         // 3. Conference League
         // Winner of the Europe Play-off gets the spot
         Team europePlayoffWinner = europePlayoffTeams.get(0);
-        if(!qualifiedForEurope.contains(europePlayoffWinner)){
+        if (!qualifiedForEurope.contains(europePlayoffWinner)) {
             ueclTeams.add(europePlayoffWinner);
         }
     }
@@ -274,11 +281,13 @@ public class BelgianProLeague_League {
                 } else if (uelTeams.contains(team)) {
                     qualificationMarker = " [UEL]";
                 } else if (ueclTeams.contains(team)) {
-                    qualificationMarker = " [UECL-Q]";
+                    qualificationMarker = " [UECL]";
                 }
 
-                if (position == 14) qualificationMarker += " [RPO]";
-                else if (position >= 15) qualificationMarker += " [R]";
+                if (position == 14)
+                    qualificationMarker += " [RPO]";
+                else if (position >= 15)
+                    qualificationMarker += " [R]";
             }
 
             teamDisplayName += qualificationMarker.trim();
@@ -299,7 +308,8 @@ public class BelgianProLeague_League {
 
         if (isFinal && startPosition == 13) {
             System.out.println("------------------------------------------------------------------------------------");
-            System.out.println("Legend: [C] Champions, [UCL] Champions League, [UCL-Q] UCL Qualifiers, [UEL] Europa League, [UECL-Q] UECL Qualifiers");
+            System.out.println(
+                    "Legend: [C] Champions, [UCL] Champions League, [UCL-Q] UCL Qualifiers, [UEL] Europa League, [UECL-Q] UECL Qualifiers");
             System.out.println("        [RPO] Relegation Play-off, [R] Relegation");
             System.out.println("Cup Winner: [Belgian Cup: " + this.belgianCupWinner.getName() + "]");
         }

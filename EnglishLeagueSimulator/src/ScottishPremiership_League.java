@@ -12,7 +12,8 @@ import java.util.stream.Collectors;
  * This version simulates the 12-team league, the unique post-season split,
  * the Scottish Cup, and features accurate European/relegation rules.
  *
- * NOTE: This class has been refactored to work with the EuropeanCompetitionSimulator.
+ * NOTE: This class has been refactored to work with the
+ * EuropeanCompetitionSimulator.
  */
 public class ScottishPremiership_League {
     private final List<Team> teams;
@@ -28,7 +29,6 @@ public class ScottishPremiership_League {
     private final List<Team> uelTeams = new ArrayList<>();
     private final List<Team> ueclTeams = new ArrayList<>();
 
-
     public ScottishPremiership_League() {
         this.teams = new ArrayList<>();
         this.phase1Fixtures = new ArrayList<>();
@@ -37,9 +37,17 @@ public class ScottishPremiership_League {
     }
 
     // --- GETTERS FOR EUROPEAN QUALIFIERS ---
-    public List<Team> getUclTeams() { return uclTeams; }
-    public List<Team> getUelTeams() { return uelTeams; }
-    public List<Team> getUeclTeams() { return ueclTeams; }
+    public List<Team> getUclTeams() {
+        return uclTeams;
+    }
+
+    public List<Team> getUelTeams() {
+        return uelTeams;
+    }
+
+    public List<Team> getUeclTeams() {
+        return ueclTeams;
+    }
 
     public static void main(String[] args) {
         ScottishPremiership_League scotland = new ScottishPremiership_League();
@@ -74,18 +82,18 @@ public class ScottishPremiership_League {
 
     public void setupTeams() {
         double initialElo = 1500;
-        this.teams.add(new Team("Celtic", 98, 89, initialElo + 330));
-        this.teams.add(new Team("Rangers", 94, 86, initialElo + 290));
-        this.teams.add(new Team("Heart of Midlothian", 82, 80, initialElo + 150));
-        this.teams.add(new Team("Hibernian", 80, 78, initialElo + 120));
-        this.teams.add(new Team("Aberdeen", 79, 79, initialElo + 100));
-        this.teams.add(new Team("St Mirren", 74, 76, initialElo + 20));
-        this.teams.add(new Team("Dundee", 75, 72, initialElo));
-        this.teams.add(new Team("Kilmarnock", 72, 75, initialElo - 20));
-        this.teams.add(new Team("Motherwell", 71, 70, initialElo - 80));
-        this.teams.add(new Team("Ross County", 68, 71, initialElo - 150));
-        this.teams.add(new Team("St Johnstone", 66, 73, initialElo - 180));
-        this.teams.add(new Team("Dundee United", 65, 68, initialElo - 220));
+        this.teams.add(new Team("Celtic", 98, 89, initialElo + 180)); // Adjusted
+        this.teams.add(new Team("Rangers", 94, 86, initialElo + 170)); // Adjusted
+        this.teams.add(new Team("Heart of Midlothian", 82, 80, initialElo + 50)); // Adjusted
+        this.teams.add(new Team("Hibernian", 80, 78, initialElo + 30)); // Adjusted
+        this.teams.add(new Team("Aberdeen", 79, 79, initialElo + 10)); // Adjusted
+        this.teams.add(new Team("St Mirren", 74, 76, initialElo - 10)); // Adjusted
+        this.teams.add(new Team("Dundee", 75, 72, initialElo - 20)); // Adjusted
+        this.teams.add(new Team("Kilmarnock", 72, 75, initialElo - 40)); // Adjusted
+        this.teams.add(new Team("Motherwell", 71, 70, initialElo - 60)); // Adjusted
+        this.teams.add(new Team("Ross County", 68, 71, initialElo - 100)); // Adjusted
+        this.teams.add(new Team("St Johnstone", 66, 73, initialElo - 130)); // Adjusted
+        this.teams.add(new Team("Dundee United", 65, 68, initialElo - 160)); // Adjusted
         System.out.println("12 Scottish Premiership teams have been created.");
     }
 
@@ -195,9 +203,9 @@ public class ScottishPremiership_League {
 
         // If cup winner spot is not used, it passes down to 3rd place as a UEL spot
         if (uelTeams.isEmpty()) {
-            while(uelTeams.isEmpty() && leagueSpotCounter < this.teams.size()){
+            while (uelTeams.isEmpty() && leagueSpotCounter < this.teams.size()) {
                 Team team = this.teams.get(leagueSpotCounter);
-                if(!qualifiedForEurope.contains(team)){
+                if (!qualifiedForEurope.contains(team)) {
                     uelTeams.add(team);
                     qualifiedForEurope.add(team);
                 }
@@ -206,9 +214,9 @@ public class ScottishPremiership_League {
         }
 
         // Next two available spots get UECL
-        while(ueclTeams.size() < 2 && leagueSpotCounter < this.teams.size()){
+        while (ueclTeams.size() < 2 && leagueSpotCounter < this.teams.size()) {
             Team team = this.teams.get(leagueSpotCounter);
-            if(!qualifiedForEurope.contains(team)){
+            if (!qualifiedForEurope.contains(team)) {
                 ueclTeams.add(team);
                 qualifiedForEurope.add(team);
             }
@@ -261,8 +269,10 @@ public class ScottishPremiership_League {
                     qualificationMarker = " [UECL-Q]";
                 }
 
-                if (position == 11) qualificationMarker += " [RPO]";
-                else if (position == 12) qualificationMarker += " [R]";
+                if (position == 11)
+                    qualificationMarker += " [RPO]";
+                else if (position == 12)
+                    qualificationMarker += " [R]";
             }
 
             teamDisplayName += qualificationMarker.trim();
@@ -283,7 +293,8 @@ public class ScottishPremiership_League {
 
         System.out.println("------------------------------------------------------------------------------------");
         if (isFinalTable) {
-            System.out.println("Legend: [C] Champion, [UCL] Champions League, [UCL-Q] UCL Qualifiers, [UEL-Q] UEL Qualifiers, [UECL-Q] UECL Qualifiers");
+            System.out.println(
+                    "Legend: [C] Champion, [UCL] Champions League, [UCL-Q] UCL Qualifiers, [UEL-Q] UEL Qualifiers, [UECL-Q] UECL Qualifiers");
             System.out.println("        [RPO] Relegation Play-off, [R] Relegation");
             System.out.println("Cup Winner: [Scottish Cup: " + this.scottishCupWinner.getName() + "]");
         }
